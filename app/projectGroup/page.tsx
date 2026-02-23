@@ -21,9 +21,27 @@ export default function TeamPage() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const [students, setStudents] = useState<Student[]>([
-    { id: 1, name: 'أحمد محمد', universityEmail: 'ahmed.mohamed@university.edu', university: 'جامعة الملك سعود', joinDate: '2024-01-15' },
-    { id: 2, name: 'سارة عبدالله', universityEmail: 'sara.abdullah@university.edu', university: 'جامعة الملك عبدالعزيز', joinDate: '2024-02-20' },
-    { id: 3, name: 'tariq.com', universityEmail: 'tariq@university.edu', university: 'الاسم الجامعي', joinDate: '2024-03-10' },
+    {
+      id: 1,
+      name: 'أحمد محمد',
+      universityEmail: 'ahmed.mohamed@university.edu',
+      university: 'جامعة الملك سعود',
+      joinDate: '2024-01-15',
+    },
+    {
+      id: 2,
+      name: 'سارة عبدالله',
+      universityEmail: 'sara.abdullah@university.edu',
+      university: 'جامعة الملك عبدالعزيز',
+      joinDate: '2024-02-20',
+    },
+    {
+      id: 3,
+      name: 'tariq.com',
+      universityEmail: 'tariq@university.edu',
+      university: 'الاسم الجامعي',
+      joinDate: '2024-03-10',
+    },
   ]);
 
   const filteredStudents = students.filter(student =>
