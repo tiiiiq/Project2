@@ -6,7 +6,10 @@ import {
     MessageSquare,
     LogOut,
     ChevronRight,
-    Sparkles
+    Sparkles,
+    User,
+    ClipboardList,
+    List
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -21,9 +24,16 @@ const SidebarSupervisor: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
     const menuItems = [
         { icon: LayoutDashboard, label: 'الرئيسية', href: '/supervisorDashboard' },
-        { icon: FolderKanban, label: 'المشروع', href: '/supervisorProject' },
+        { icon: ClipboardList, label: 'المهام الرئيسية', href: '/manage-main-tasks' },
+        { icon: List, label: 'المهام الفرعية', href: '/manage-tasks' },
         { icon: MessageSquare, label: 'قروب الدردشة', href: '/supervisorChat' },
     ];
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+    };
 
     return (
         <>
@@ -87,7 +97,10 @@ const SidebarSupervisor: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
                 {/* Footer */}
                 <div className="p-4 border-t border-gray-200">
-                    <button className="w-full flex items-center gap-3 p-3 text-gray-50 hover:bg-blue-950 cursor-pointer rounded-lg transition-colors mt-2">
+                    <button 
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 p-3 text-gray-50 hover:bg-blue-950 cursor-pointer rounded-lg transition-colors mt-2"
+                    >
                         <LogOut className="w-5 h-5" />
                         <span className="font-medium">تسجيل الخروج</span>
                     </button>

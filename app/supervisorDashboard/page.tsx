@@ -3,17 +3,43 @@
 import SidebarSupervisor from '@/components/SidebarSupervisor';
 import DashboardCard from '@/components/DashboardCard';
 import PageHeaderSupervisor from '@/components/PageHeaderSupervisor';
+import { useState, useEffect } from 'react';
+import { API_URL, getHeaders } from '@/config/api';
 
-const dashboardCards = [
+const initialCards = [
     { id: 3, text: "الأفكار المرسلة", href: "/sent-ideas" },
-    { id: 2, text: "لا يوجد مشروع حاليا" },
-    { id: 1, text: "لا توجد مهام حاليا" },
+    { id: 1, text: "توليد وتوزيع المهام", href: "/ai-tasks" },
 ];
-
-import { useState } from 'react';
 
 export default function SupervisorDashboard() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [cards, setCards] = useState(initialCards);
+
+    useEffect(() => {
+        const fetchDocsStatus = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_URL}/api/supervisor/docs-status`, {
+                    headers: getHeaders(token)
+                });
+                const data = await res.json();
+                if (res.ok && data.data.is_complete) {
+                    setCards(prev => {
+                        // Avoid duplicates if already added
+                        if (prev.some(c => c.id === 4)) return prev;
+                        return [...prev, { id: 4, text: "مستندات المشروع", href: "/documents" }];
+                    });
+                }
+            } catch (err) {
+                console.error('Error fetching docs status:', err);
+            }
+        };
+
+        fetchDocsStatus();
+    }, []);
+
     return (
         <div className="h-screen bg-gray-100 flex overflow-hidden" dir="rtl">
             <SidebarSupervisor isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
@@ -23,7 +49,7 @@ export default function SupervisorDashboard() {
 
                 <main className="flex-1 p-4 md:p-8 overflow-y-auto">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-                        {dashboardCards.map((card) => (
+                        {cards.map((card) => (
                             <DashboardCard
                                 key={card.id}
                                 id={card.id}

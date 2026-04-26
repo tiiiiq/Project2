@@ -2,14 +2,11 @@
 
 import {
   LayoutDashboard,
-  FolderKanban,
   Users,
-  MessageSquare,
   LogOut,
   ChevronRight,
   Sparkles,
-  User,
-  ClipboardList
+  Settings
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -20,23 +17,16 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+const SidebarAdmin: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
 
   const menuItems = [
-    { icon: LayoutDashboard, label: 'الرئيسية', href: '/leaderDashboard' },
-    { icon: FolderKanban, label: 'المشروع', href: '/project' },
-    { icon: Users, label: 'فريق المشروع', href: '/projectGroup' },
-    { icon: ClipboardList, label: 'المهام الرئيسية', href: '/student-main-tasks' },
-    { icon: ClipboardList, label: 'المهام الفرعية', href: '/student-tasks' },
-    { icon: MessageSquare, label: 'قروب الدردشة', href: '/chat' },
+    { icon: LayoutDashboard, label: 'لوحة التحكم', href: '/adminDashboard' },
   ];
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    localStorage.removeItem('student');
-    localStorage.removeItem('project_id');
     window.location.href = '/login';
   };
 
@@ -56,12 +46,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="p-6 border-b border-white/10">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
-                <Sparkles className="w-6 h-6 text-white" />
+              <div className="p-2 bg-gradient-to-br from-red-500 to-orange-600 rounded-lg">
+                <Settings className="w-6 h-6 text-white" />
               </div>
               <div className="truncate">
-                <h1 className="text-xl font-bold ">AI SUPERVISOR</h1>
-                <p className="text-sm opacity-70">مدير المشاريع الذكي</p>
+                <h1 className="text-xl font-bold ">ADMIN PANEL</h1>
+                <p className="text-sm opacity-70">إدارة النظام</p>
               </div>
             </div>
             {/* Close button for mobile */}
@@ -84,8 +74,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   <Link
                     href={item.href}
                     className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${isActive
-                      ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-r-4 border-blue-500'
-                      : 'text-gray-50 hover:bg-blue-950 '
+                      ? 'bg-gradient-to-r from-red-50 to-red-100 text-red-700 border-r-4 border-red-500'
+                      : 'text-gray-50 hover:bg-red-950 '
                       }`}
                   >
                     <div className="flex items-center gap-3">
@@ -101,10 +91,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-white/10">
           <button 
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 p-3 text-gray-50 hover:bg-blue-950 cursor-pointer rounded-lg transition-colors mt-2"
+            className="w-full flex items-center gap-3 p-3 text-gray-50 hover:bg-red-950 cursor-pointer rounded-lg transition-colors mt-2"
           >
             <LogOut className="w-5 h-5" />
             <span className="font-medium">تسجيل الخروج</span>
@@ -115,4 +105,4 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default Sidebar;
+export default SidebarAdmin;
