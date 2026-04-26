@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'AI SUPERVISOR - نظام إدارة المشاريع',
-  description: 'منصة ذكية لإدارة المشاريع باستخدام الذكاء الاصطناعي  تساعدك في تنظيم مهامك، تتبع تقدمك، وتحقيق أهدافك بكفاءة.',
+  description: 'منصة ذكية لإدارة المشاريع باستخدام الذكاء الاصطناعي',
 };
 
 export default function RootLayout({

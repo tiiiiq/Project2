@@ -24,86 +24,30 @@ export default function TeamPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [students, setStudents] = useState<StudentMember[]>([]);
-  const [supervisor, setSupervisor] = useState<any>(null);
-  const [isLeader, setIsLeader] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
-  const [isEditingSupervisor, setIsEditingSupervisor] = useState(false);
 
-  const fetchMembers = async () => {
-    const projectId = localStorage.getItem('project_id');
-    const token = localStorage.getItem('token');
-    const userStr = localStorage.getItem('user');
-    let currentUserId = null;
-
-    if (userStr) {
-      try {
-        const userObj = JSON.parse(userStr);
-        currentUserId = userObj.id;
-      } catch (e) {
-        console.error('Error parsing user from localStorage', e);
-      }
-    }
-
-    if (!projectId || !token) {
-      setErrorMsg('بيانات الجلسة غير متوفرة. يرجى تسجيل الدخول.');
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const res = await fetch(`${API_URL}/api/projects/${projectId}/members`, {
-        headers: getHeaders(token)
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setStudents(data.data.members);
-        setSupervisor(data.data.supervisor);
-
-        const me = data.data.members.find((m: any) => m.User.id.toString() === currentUserId?.toString());
-        if (me && me.type === 'student leader') {
-          setIsLeader(true);
-        }
-      } else {
-        setErrorMsg(data.message || `فشل في جلب أعضاء الفريق (HTTP ${res.status})`);
-      }
-    } catch (err: any) {
-      console.error('Fetch members error:', err);
-      setErrorMsg(`تعذر الاتصال بالخادم (${API_URL}). ${err.message || ''}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchMembers();
-  }, []);
-
-  const handleDelete = async (studentId: number) => {
-    if (!confirm('هل أنت متأكد من حذف هذا العضو؟')) return;
-
-    const projectId = localStorage.getItem('project_id');
-    const token = localStorage.getItem('token');
-
-    try {
-      const res = await fetch(`${API_URL}/api/projects/${projectId}/members/${studentId}`, {
-        method: 'DELETE',
-        headers: getHeaders(token)
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setSuccessMsg('تم حذف العضو بنجاح');
-        fetchMembers();
-      } else {
-        setErrorMsg(data.message || `فشل في حذف العضو (HTTP ${res.status})`);
-      }
-    } catch (err: any) {
-      console.error('Delete error:', err);
-      setErrorMsg(`تعذر الاتصال بالخادم (${API_URL}). ${err.message || ''}`);
-    }
-  };
+  const [students, setStudents] = useState<Student[]>([
+    {
+      id: 1,
+      name: 'أحمد محمد',
+      universityEmail: 'ahmed.mohamed@university.edu',
+      university: 'جامعة الملك سعود',
+      joinDate: '2024-01-15',
+    },
+    {
+      id: 2,
+      name: 'سارة عبدالله',
+      universityEmail: 'sara.abdullah@university.edu',
+      university: 'جامعة الملك عبدالعزيز',
+      joinDate: '2024-02-20',
+    },
+    {
+      id: 3,
+      name: 'tariq.com',
+      universityEmail: 'tariq@university.edu',
+      university: 'الاسم الجامعي',
+      joinDate: '2024-03-10',
+    },
+  ]);
 
   const filteredStudents = students.filter(student => {
     const fullName = student.User?.full_name || '';
